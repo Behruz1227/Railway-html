@@ -29,14 +29,14 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-				background-color: rgba(0, 0, 0, 0.5); /* Adjust the alpha value to control darkness */
+				background-color: rgba(0, 0, 0, 0.5);
 			}
 
 			.content {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				background: rgba(57, 49, 134, 0.54); /* Modified background color */
+				background: rgba(57, 49, 134, 0.54);
 				padding: 1rem;
 				height: 10%;
 				width: 100%;
@@ -85,21 +85,28 @@
 			}
 
 			.jugi {
-				width: 40px; /* Adjusted width */
+				width: 40px;
 			}
+
 			.gls {
 				display: flex;
 				align-items: center;
 				gap: 2rem;
 			}
+
 			.href {
 				text-decoration: none;
 				color: rgb(0, 255, 98);
 			}
+
 			.location {
 				width: 90%;
+				display: flex;
+				align-items: end;
+				justify-content: space-between;
 				margin-left: 1rem;
 			}
+
 			.cont {
 				width: 20%;
 				display: flex;
@@ -120,21 +127,24 @@
 				gap: 1rem;
 				width: 90%;
 			}
+
 			.child {
 				border: 1px solid black;
 				padding: 1rem;
+				background: #fff;
 				cursor: pointer;
 			}
+
 			.with {
 				width: 100%;
 				display: flex;
-				overflow: scroll;
 				height: 100%;
 				position: relative;
 				align-items: center;
 				justify-content: center;
 				margin-top: 2rem;
 			}
+
 			@media (max-width: 768px) {
 				.content {
 					padding: 1rem;
@@ -165,6 +175,7 @@
 					font-size: 14px;
 				}
 			}
+
 			@keyframes slideIn {
 				from {
 					transform: translateY(-100%);
@@ -173,13 +184,54 @@
 					transform: translateY(0);
 				}
 			}
+
 			.animated {
 				animation: slideIn 1s forwards;
 			}
-			.addd {
+
+			.add {
 				padding: 1rem;
-    background-color: white;
-    
+				border-radius: 7px;
+				border: none;
+				position: relative;
+				cursor: pointer;
+				background-color: white;
+			}
+
+			.modal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgb(0, 0, 0);
+				background-color: rgba(0, 0, 0, 0.4);
+				padding-top: 60px;
+			}
+
+			.modal-content {
+				background-color: #fefefe;
+				margin: 5% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 80%;
+			}
+
+			.close {
+				color: #aaaaaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: #000;
+				text-decoration: none;
+				cursor: pointer;
 			}
 		</style>
 	</head>
@@ -195,13 +247,11 @@
 							width="80"
 							height="80"
 						/>
-						<!-- Added width and height attributes -->
 						<h1 class="heading">Railway</h1>
 					</div>
 					<div class="gls">
 						<div class="profile">
 							<img class="jugi" src="../../img/user.png" alt="Admin logo" width="40" height="40" />
-							<!-- Added width and height attributes -->
 							<p>Profile</p>
 						</div>
 						<button class="button">Log Out</button>
@@ -215,30 +265,65 @@
 						<p>/</p>
 						<a class="href" href="#">PD</a>
 					</div>
-				</div>
-				<div class="add">
-					<button class="addd">Add +</button>
+					<div class="add">
+						<button class="addd">Add +</button>
+					</div>
 				</div>
 			</div>
 
 			<div class="with">
 				<div class="list"></div>
 			</div>
+
+			<!-- Modal oynasi -->
+			<div class="modal">
+				<!-- Modal kontenti -->
+				<div class="modal-content">
+					<!-- Modal yopish tugmasi -->
+					<span class="close">&times;</span>
+					<!-- Modal matni yoki narsa -->
+					<p>Modal matni yoki narsa shu joyda bo'ladi.</p>
+				</div>
+			</div>
 		</div>
-	</body>
-	<script>
-		var listContainer = document.querySelector(".list");
 
-		for (var i = 1; i <= 20; i++) {
-			var newChild = document.createElement("div");
+		<script>
+			var listContainer = document.querySelector(".list");
 
-			newChild.classList.add("child");
-			newChild.textContent = "PD-" + i;
-			newChild.addEventListener("click", function () {
-				window.location.href = "../Menu/pdb.html";
+			// PD listini generatsiya qilish
+			for (var i = 1; i <= 10; i++) {
+				var newChild = document.createElement("div");
+
+				newChild.classList.add("child");
+				newChild.textContent = "PD-" + i;
+				newChild.addEventListener("click", function () {
+					window.location.href = "../Menu/pdb.html";
+				});
+
+				listContainer.appendChild(newChild);
+			}
+
+			// Modal oynasini ochish uchun kerakli elementlarni tanlash
+			var modal = document.querySelector(".modal");
+			var addButton = document.querySelector(".addd");
+			var closeButton = document.querySelector(".close");
+
+			// Add tugmasini bosganda modal oynasini ochish
+			addButton.addEventListener("click", function () {
+				modal.style.display = "block";
 			});
 
-			listContainer.appendChild(newChild);
-		}
-	</script>
+			// Yopish tugmasini bosganda modal oynasini yopish
+			closeButton.addEventListener("click", function () {
+				modal.style.display = "none";
+			});
+
+			// Modal oynasidan tashqariga bosilganda modalni yopish
+			window.addEventListener("click", function (event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			});
+		</script>
+	</body>
 </html>
